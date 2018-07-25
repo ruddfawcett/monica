@@ -16,7 +16,7 @@ class CollectionHelper
      */
     public static function sortByCollator($collect, $callback, $options = null, $descending = false)
     {
-        if (! class_exists("Collator")) {
+        if (! class_exists('Collator')) {
             return $descending ? $collect->sortByDesc($callback) : $collect->sortBy($callback);
         }
 
