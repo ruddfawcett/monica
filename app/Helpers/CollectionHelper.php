@@ -14,8 +14,12 @@ class CollectionHelper
      * @param  bool  $descending
      * @return static
      */
-    public static function sortByCollator($collect, $callback, $options = \Collator::SORT_STRING, $descending = false)
+    public static function sortByCollator($collect, $callback, $options = null, $descending = false)
     {
+        if (! class_exists("Collator")) {
+            return $descending ? $collect->sortByDesc($callback) : $collect->sortBy($callback);
+        }
+
         $results = [];
 
         $callback = static::valueRetriever($callback);
@@ -28,7 +32,7 @@ class CollectionHelper
         }
 
         // Using Collator to sort the array, with locale-sensitive sort ordering support.
-        static::getCollator()->asort($results, $options);
+        static::getCollator()->asort($results, is_null($options) ? \Collator::SORT_STRING : $options);
         if ($descending) {
             $results = array_reverse($results);
         }
